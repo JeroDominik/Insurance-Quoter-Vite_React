@@ -1,16 +1,37 @@
 import { MARCAS, YEARS, PLANES } from "../constants"
 import { Fragment } from "react"
+import useCotizador from "../hooks/useCotizador"
+import Error from "./Error"
 
 export default function Formulario() {
+
+    const { handleChangeDatos, datos, error, setError,cotizarSeguro } = useCotizador()
+
+    const handleSubmit = e => {
+        e.preventDefault()
+
+        if(Object.values(datos).includes('')) {
+            setError('Todos los Campos son Obligatorios')
+            return
+        }
+        setError('')
+        cotizarSeguro()
+    }
+
   return (
     <>
+        {error && <Error/>} 
         
-        <form>
+        <form
+            onSubmit={handleSubmit}
+        >
             <div className="my-5">
                 <label className="block mb-3 font-bold text-gray-400 uppercase">Marca</label>
                 <select 
                     name="marca"
                     className="w-full p-3 bg-white border border-gray-200"
+                    onChange={e => handleChangeDatos(e)}
+                    value={datos.marca}
                 >
                     <option value="">-- Seleccione Marca --</option>
                     {MARCAS.map( marca => (
@@ -28,6 +49,8 @@ export default function Formulario() {
                 <select 
                     name="year"
                     className="w-full p-3 bg-white border border-gray-200"
+                    onChange={e => handleChangeDatos(e)}
+                    value={datos.year}
                 >
                     <option value="">-- Seleccione Año --</option>
                     {YEARS.map( year => (
@@ -52,6 +75,7 @@ export default function Formulario() {
                                 type="radio"
                                 name="plan"
                                 value={plan.id}
+                                onChange={e => handleChangeDatos(e)}
                             />
                         </Fragment>
                     ))}
