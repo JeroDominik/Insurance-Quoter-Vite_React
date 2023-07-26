@@ -1,4 +1,4 @@
-import { useState, createContext } from "react";
+import { useState, createContext, useRef } from "react";
 import { obtenerDiferenciaYear, calcularMarca, calcularPlan, formatearDinero } from "../helpers";
 
 const CotizadorContext = createContext()
